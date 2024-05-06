@@ -34,21 +34,42 @@ public class App {
                     switch (choice) {
                         case 1:
                             System.out.println("You chose Login.");
-                            credentialFunctions.printAllCredentials();
+                            System.out.println("Enter your email:");
+                            System.out.print(">> ");;
+
+                            String emailInput = scanner.nextLine();
+                            if(!verifyEmail(emailInput)) {
+                                System.out.println("Please enter a proper email!");
+                                continue;
+                            }
+                            
+                            System.out.println("Enter your password:");
+                            System.out.print(">> ");
+
+                            String passwordInput = scanner.nextLine();
+
+                            verifyCredentials(emailInput, passwordInput);
+
                             break;
                         case 2:
-                            System.out.println("You chose Sign Up.");
                             System.out.println("Enter an email:");
                             System.out.print(">> ");
                             String emailInput = scanner.nextLine();
                             if (!credentialFunctions.verifyEmail(emailInput)) {
                                 System.out.println("Please enter a proper email!");
-                                continue; // Go back to the beginning of the loop
+                                continue;
                             }
 
                             System.out.println("Enter a password:");
                             System.out.print(">> ");
                             String passwordInput = scanner.nextLine();
+                            int passLength = passwordInput.length();
+
+                            if(passLength < 8) {
+                                System.out.println("Passwords have to be more than 8 characters!");
+                                continue;
+                            }
+
                             credentialFunctions.pushCredentials(emailInput, passwordInput);
                             break;
                         case 3:
@@ -60,7 +81,7 @@ public class App {
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("Invalid input. Please enter a valid integer option.");
-                    scanner.next(); // Consume invalid input
+                    scanner.next(); 
                 }
             }
         }
@@ -102,6 +123,31 @@ public class App {
                         System.out.println("Email: " + email + ", Password: " + password);
                     } else {
                         System.out.println("Invalid format: " + line);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public static boolean verifyCredentials(String email, String password) {
+            String file_path = "." + File.separator + "src" + File.separator + "resource" + "credentials.txt";
+
+            File file = new File(file_path);
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(";");
+                    if (parts.length == 2) {
+                        String emailCheck = parts[0].trim();
+                        String passwordCheck = parts[1].trim();
+                        if(email.equals(emailCheck) && password.equals(passwordCheck)) {
+                            return true;
+                        }
+                    } else {
+                        System.out.println("Invalid credentials!");
+                        return false;
                     }
                 }
             } catch (IOException e) {
