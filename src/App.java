@@ -112,8 +112,8 @@ public class App {
         private static final int MAP_WIDTH = 300;
         private static final int VIEW_FRAME_WIDTH = 35;
         private static final int VIEW_FRAME_HEIGHT = 15;
-        private static final int START_X = 150;
-        private static final int START_Y = 150;
+        private static int START_X = 150;
+        private static int START_Y = 150;
     
         private static final String MAP_FILE_PATH = "./src/resource/map.txt";
     
@@ -161,25 +161,31 @@ public class App {
         public static void processUserInput(char userInput) {
             switch (userInput) {
                 case 'w':
-                    
+                    START_Y--;
+                    loadViewFrame();
                     break;
                 case 'a':
-                    
+                    START_X--;
+                    loadViewFrame();
                     break;
                 case 's':
-                    
+                    START_Y++;
+                    loadViewFrame();
                     break;
                 case 'd':
-                    
+                    START_X++;
+                    loadViewFrame();
                     break;
                 case 'i':
-
+                    itemRender();
                     break;
                 case 'z':
-
+                    shopRender();
                     break;
                 case 'e':
-
+                    eraseFrameRender();
+                    saveUserProgress();
+                    PrePages.loginPage(null);
                     break;
                 default:
                     break;
@@ -189,12 +195,24 @@ public class App {
         public static void currentMapRender() {
             // TO DO
         }
+
+        public static void itemRender() {
+            // TO DO 
+        }
     
         public static void statRender() {
             // TO DO
         }
 
         public static void saveUserProgress() {
+            // TO DO
+        }
+
+        public static void shopRender() {
+            // TO DO
+        }
+        
+        public static void eraseFrameRender() {
             // TO DO
         }
     }
